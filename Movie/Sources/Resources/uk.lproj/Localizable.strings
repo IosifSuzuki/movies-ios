@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  Movie
+
+  Created by Bogdan Petkanych on 28.10.2023.
+  
+*/
+
+"MoviesViewController.title" = "Популярні фільми";
