@@ -21,5 +21,8 @@ target 'Movie' do
 
   swinject_pods
   rx_pods
+  
+  pod 'Kingfisher', '~> 7.0'
+  pod 'Alamofire', '~> 5.0'
 
 end

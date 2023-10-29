@@ -10,7 +10,7 @@ import Swinject
 
 extension Assembler {
   
-  static var sharedAssembler: Assembler = {
+  static var shared: Assembler = {
     return Assembler([
       ServiceAssemble(),
       ViewModelAssemble(),

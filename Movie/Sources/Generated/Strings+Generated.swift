@@ -10,11 +10,15 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// Localizable.strings
+  ///   Movie
+  /// 
+  ///   Created by Bogdan Petkanych on 28.10.2023.
+  public static let error = L10n.tr("Localizable", "Error", fallback: "Error")
+  /// Search
+  public static let search = L10n.tr("Localizable", "Search", fallback: "Search")
   public enum MoviesViewController {
-    /// Localizable.strings
-    ///   Movie
-    /// 
-    ///   Created by Bogdan Petkanych on 28.10.2023.
+    /// Popular Movies
     public static let title = L10n.tr("Localizable", "MoviesViewController.title", fallback: "Popular Movies")
   }
 }

@@ -11,8 +11,10 @@ import Swinject
 class ViewModelAssemble: Assembly {
   
   func assemble(container: Container) {
-    container.register(MoviesViewModel.self) { _ in
-      return MoviesViewModel()
+    container.register(MoviesViewModel.self) { resolver in
+      let apiMovie = resolver.resolve(APIMovie.self)!
+      
+      return MoviesViewModel(apiMovie: apiMovie)
     }
   }
   

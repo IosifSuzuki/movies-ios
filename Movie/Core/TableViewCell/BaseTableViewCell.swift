@@ -7,6 +7,17 @@
 
 import UIKit
 
-class BaseTableViewCell: UITableViewCell, Identify {
+class BaseTableViewCell: UITableViewCell, ThemeDependency, Identify {
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    
+    selectionStyle = .none
+  }
+  
+  func apply(theme: Theme) {
+    backgroundConfiguration = .clear()
+    backgroundConfiguration?.backgroundColor = theme.backgroundColor
+  }
   
 }

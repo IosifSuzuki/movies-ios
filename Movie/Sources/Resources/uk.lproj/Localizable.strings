@@ -6,4 +6,6 @@
   
 */
 
+"Error" = "Помилка";
+"Search" = "Пошук";
 "MoviesViewController.title" = "Популярні фільми";
