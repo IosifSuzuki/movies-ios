@@ -20,7 +20,6 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-
     viewModel.fetchData()
   }
   
@@ -89,8 +88,8 @@ extension MoviesViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(forClass: MovieItemTableViewCell.self, indexPath: indexPath)
     let itemViewModel = viewModel.dataSource[indexPath.row]
     
-    cell.setup(viewModel: itemViewModel)
     cell.apply(theme: theme)
+    cell.setup(viewModel: itemViewModel)
     
     return cell
   }

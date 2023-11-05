@@ -10,17 +10,19 @@ import Foundation
 struct MovieItemViewModel {
   let posterURL: URL
   let title: String
-  let genre: [String]
+  let genreIDs: [Int]
   let avarageRating: Double
   let releaseDate: Date
+  private let availableGenres: AvailableGenres
   
-  init?(movieItem: MovieItem) {
+  init?(movieItem: MovieItem, availableGenres: AvailableGenres) {
     guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(movieItem.posterPath)") else {
       return nil
     }
+    self.availableGenres = availableGenres
     self.posterURL = url
     self.title = movieItem.title
-    self.genre = ["test"]
+    self.genreIDs = movieItem.genreIDs
     self.avarageRating = movieItem.voteAverage
     self.releaseDate = movieItem.realeaseDate
   }
@@ -32,7 +34,9 @@ struct MovieItemViewModel {
   }
   
   var genresText: String {
-    genre.joined(separator: ",")
+    genreIDs.compactMap { id in
+      availableGenres[id]
+    }.joined(separator: ", ")
   }
   
   var avarageRatingText: String {

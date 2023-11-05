@@ -9,4 +9,5 @@ import Foundation
 
 protocol APIMovie {
   func discoverMovie() async throws -> Page<MovieItem>
+  func genres() async throws -> Genres
 }

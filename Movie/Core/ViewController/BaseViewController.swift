@@ -17,6 +17,8 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
   
   var disposeBag = DisposeBag()
   
+  private let loaderView = HorizontalGradientLoader()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -48,19 +50,57 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
         self.present(alertViewController, animated: true)
       })
       .disposed(by: disposeBag)
+    
+    viewModel
+      .loadingIndicatorDriver
+      .drive { [weak self] isLoading in
+        if isLoading {
+          self?.loaderView.startAnimation()
+        } else {
+          self?.loaderView.stopAnimation()
+        }
+      }.disposed(by: disposeBag)
   }
   
   func setupView() {
     title = viewModel.title
+    
+    setupLoader()
   }
   
-  // MARK: - Static
+  // MARK: - Static methods
   
   class func initialize() -> Self {
     guard let viewController = Assembler.shared.resolver.resolve(Self.self) else {
       fatalError("register your controler in Assembler")
     }
     return viewController
+  }
+  
+  // MARK: - Private methods
+  
+  private func setupLoader() {
+    view.addSubview(loaderView)
+    
+    loaderView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      self.view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: loaderView.topAnchor),
+      self.view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: loaderView.leadingAnchor),
+      self.view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: loaderView.trailingAnchor),
+      loaderView.heightAnchor.constraint(equalToConstant: 3)
+    ])
+    
+    let gradientColors = UIColor.linearGradientColors(
+      from: Asset.Colors.Loader.startColorGradient.color, 
+      to: Asset.Colors.Loader.endColorGradient.color,
+      length: 50
+    ) + UIColor.linearGradientColors(
+      from: Asset.Colors.Loader.endColorGradient.color, 
+      to: Asset.Colors.Loader.startColorGradient.color, 
+      length: 50
+    )
+    loaderView.duration = 0.01
+    loaderView.colors = gradientColors
   }
   
 }

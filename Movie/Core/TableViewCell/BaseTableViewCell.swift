@@ -9,6 +9,8 @@ import UIKit
 
 class BaseTableViewCell: UITableViewCell, ThemeDependency, Identify {
   
+  var theme: Theme?
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     
@@ -16,6 +18,7 @@ class BaseTableViewCell: UITableViewCell, ThemeDependency, Identify {
   }
   
   func apply(theme: Theme) {
+    self.theme = theme
     backgroundConfiguration = .clear()
     backgroundConfiguration?.backgroundColor = theme.backgroundColor
   }

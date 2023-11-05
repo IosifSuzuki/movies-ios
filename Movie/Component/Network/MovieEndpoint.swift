@@ -11,10 +11,13 @@ import Alamofire
 enum MovieEndpoint: EndpointConfigurable {
   
   case discover
+  case genres
   
   var method: HTTPMethod {
     switch self {
     case .discover:
+      return .get
+    case .genres:
       return .get
     }
   }
@@ -23,12 +26,16 @@ enum MovieEndpoint: EndpointConfigurable {
     switch self {
     case .discover:
       return "discover/movie"
+    case .genres:
+      return "genre/movie/list"
     }
   }
   
   var queryParams: [URLQueryItem] {
     switch self {
     case .discover:
+      return []
+    case .genres:
       return []
     }
   }
@@ -40,6 +47,8 @@ enum MovieEndpoint: EndpointConfigurable {
   var body: Encodable? {
     switch self {
     case .discover:
+      return nil
+    case .genres:
       return nil
     }
   }

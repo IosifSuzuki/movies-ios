@@ -16,27 +16,73 @@ final class MovieItemTableViewCell: BaseTableViewCell {
   @IBOutlet private weak var genresLabel: UILabel!
   @IBOutlet private weak var ratingLabel: UILabel!
   
+  private var downloadImageTask: DownloadTask?
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    
+    posterImageView.layer.cornerRadius = 3
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    
+    applyTextColor(to: false)
+  }
+  
   override func apply(theme: Theme) {
     super.apply(theme: theme)
     
     titleLabel.font = theme.font(style: .bold, size: 32)
-    titleLabel.textColor = theme.titleColor
     genresLabel.font = theme.font(style: .regular, size: 14)
-    genresLabel.textColor = theme.subtitleColor
     ratingLabel.font = theme.font(style: .regular, size: 14)
-    ratingLabel.textColor = theme.subtitleColor
+    
+    applyTextColor(to: false)
   }
   
   // MARK: - Internal
   
   func setup(viewModel: MovieItemViewModel) {
-    posterImageView.kf.setImage(with: viewModel.posterURL, options: [
-      .transition(.fade(1)),
-      .cacheOriginalImage
-    ])
-    titleLabel.text = "\(viewModel.title) \(viewModel.yearText)"
-    genresLabel.text = viewModel.genresText
-    ratingLabel.text = viewModel.avarageRatingText
+    downloadImageTask?.cancel()
+    downloadImageTask = KingfisherManager.shared.retrieveImage(with: viewModel.posterURL, options: [.cacheOriginalImage]) { [weak self] result in
+      switch result {
+      case let .success(imageResult):
+        self?.posterImageView.image = imageResult.image
+        self?.addShadow()
+        self?.applyTextColor(to: imageResult.image.isDark)
+        
+        self?.titleLabel.text = "\(viewModel.title) \(viewModel.yearText)"
+        self?.genresLabel.text = viewModel.genresText
+        self?.ratingLabel.text = viewModel.avarageRatingText
+      case let .failure(error):
+        print("error: \(error)")
+      }
+    }
+  }
+  
+  private func addShadow() {
+    rootView.layer.shadowColor = theme?.subtitleColor.cgColor
+    rootView.layer.shadowOpacity = 1
+    rootView.layer.shadowRadius = 3
+    rootView.layer.shadowOffset = .init(width: 0, height: 3)
+  }
+  
+  private func applyTextColor(to darkContent: Bool) {
+    titleLabel.textColor = if darkContent {
+      theme?.titleColor.inverseColor()
+    } else {
+      theme?.titleColor
+    }
+    genresLabel.textColor = if darkContent {
+      theme?.subtitleColor.inverseColor()
+    } else {
+      theme?.subtitleColor
+    }
+    ratingLabel.textColor = if darkContent {
+      theme?.subtitleColor.inverseColor()
+    } else {
+      theme?.subtitleColor
+    }
   }
   
 }

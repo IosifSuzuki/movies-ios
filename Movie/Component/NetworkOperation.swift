@@ -80,4 +80,10 @@ extension NetworkOperation: APIMovie {
     return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
   }
   
+  func genres() async throws -> Genres {
+    let endpointRequest = endpointRequest(endpoitConfigurable: MovieEndpoint.genres)
+    let jsonDecoder = self.jsonDecoder
+    
+    return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
+  }
 }

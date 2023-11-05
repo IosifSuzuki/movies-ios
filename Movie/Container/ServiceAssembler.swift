@@ -36,6 +36,15 @@ class ServiceAssemble: Assembly {
       
       return NetworkOperation(configuration: configuration, eventMonitor: loggerEventMonitor)
     }
+    container.register(Logger.self, name: AppLogger.identifier) { _ in
+      AppLogger()
+    }
+    container.register(AvailableGenres.self) { resolver in
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      let apiMoview = resolver.resolve(APIMovie.self)!
+      
+      return GenresManager(logger: logger, apiMoview: apiMoview)
+    }.inObjectScope(.container)
   }
   
 }

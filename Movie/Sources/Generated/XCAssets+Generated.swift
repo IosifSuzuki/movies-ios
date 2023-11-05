@@ -30,6 +30,10 @@ internal enum Asset {
     internal static let main = ColorAsset(name: "Main")
     internal static let subtitle = ColorAsset(name: "Subtitle")
     internal static let title = ColorAsset(name: "Title")
+    internal enum Loader {
+      internal static let endColorGradient = ColorAsset(name: "loader/end_color_gradient")
+      internal static let startColorGradient = ColorAsset(name: "loader/start_color_gradient")
+    }
   }
   internal enum Media {
     internal static let icFilter = ImageAsset(name: "ic_filter")
