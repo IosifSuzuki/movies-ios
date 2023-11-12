@@ -41,10 +41,17 @@ class ServiceAssemble: Assembly {
     }
     container.register(AvailableGenres.self) { resolver in
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
-      let apiMoview = resolver.resolve(APIMovie.self)!
+      let apiMovie = resolver.resolve(APIMovie.self)!
       
-      return GenresManager(logger: logger, apiMoview: apiMoview)
+      return GenresManager(logger: logger, apiMovie: apiMovie)
     }.inObjectScope(.container)
+    
+    container.register(MoviesPagination.self) { resolver in
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      let apiMovie = resolver.resolve(APIMovie.self)!
+      
+      return MoviesPagination(movies: apiMovie, logger: logger)
+    }
   }
   
 }

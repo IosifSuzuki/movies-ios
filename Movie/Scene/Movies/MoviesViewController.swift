@@ -20,7 +20,7 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    viewModel.fetchData()
+    viewModel.refreshData()
   }
   
   override func bindToViewModel() {
@@ -29,6 +29,7 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     let input = MoviesViewModel.Input()
     let output = viewModel.transform(input: input)
     output.refreshViewTrigger.drive(onNext: { [weak self] _ in
+      self?.tableView.refreshControl?.endRefreshing()
       self?.tableView.reloadData()
     }).disposed(by: disposeBag)
   }
@@ -77,8 +78,9 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   }
   
   @objc func refresh(_ control: UIRefreshControl) {
-    control.endRefreshing()
+    viewModel.refreshData()
   }
+  
 }
 
 // MARK: - UITableViewDataSource
@@ -105,6 +107,10 @@ extension MoviesViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     Defaults.heightOfCell
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    viewModel.displayCell(by: indexPath)
   }
   
 }

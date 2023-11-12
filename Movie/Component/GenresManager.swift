@@ -19,9 +19,9 @@ class GenresManager: AvailableGenres, Identify {
   private var dataSource: [Genre] = []
   private let isRefreshedListSubject = BehaviorSubject<Bool>(value: false)
   
-  init(logger: Logger, apiMoview: APIMovie) {
+  init(logger: Logger, apiMovie: APIMovie) {
     self.logger = logger
-    self.apiMovie = apiMoview
+    self.apiMovie = apiMovie
   }
   
   subscript(id: Int) -> String? {

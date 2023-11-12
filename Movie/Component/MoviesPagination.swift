@@ -1,0 +1,49 @@
+//
+//  MoviesPagination.swift
+//  Movie
+//
+//  Created by Bogdan Petkanych on 12.11.2023.
+//
+
+import Foundation
+
+class MoviesPagination: Pagination, Identify {
+  
+  private let movie: APIMovie
+  private let logger: Logger
+  private var state: PaginationState
+  
+  init(movies: APIMovie, logger: Logger) {
+    self.movie = movies
+    self.logger = logger
+    self.state = .start
+  }
+  
+  //MARK: - Pagination
+  
+  var canLoadMore: Bool {
+    state != .finish
+  }
+  
+  func reset() {
+    logger.debug(message: "change pagination state to start")
+    state = .start
+  }
+  
+  func loadMore() async throws -> [MovieItem] {
+    guard !state.isBussy,
+          let page = state.nextPage else {
+      logger.debug(message: "pagination is bussy")
+      return []
+    }
+    state = .loading(page: page)
+    let result = try await movie.discoverMovie(page: page)
+    state = .loaded(page: page)
+    if result.page == result.totalPages {
+      logger.debug(message: "pagination has reached end")
+      state = .finish
+    }
+    return result.result
+  }
+  
+}

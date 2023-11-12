@@ -71,8 +71,10 @@ private extension NetworkOperation {
 // MARK: - APIMovie
 extension NetworkOperation: APIMovie {
   
-  func discoverMovie() async throws -> Page<MovieItem> {
-    let endpointRequest = endpointRequest(endpoitConfigurable: MovieEndpoint.discover)
+  func discoverMovie(page: Int) async throws -> Page<MovieItem> {
+    let endpointRequest = endpointRequest(
+      endpoitConfigurable: MovieEndpoint.discover(page: page)
+    )
     let jsonDecoder = self.jsonDecoder
     let dateFormatter = DateFormatter(dateFormat: "YYYY-MM-DD")
     jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)

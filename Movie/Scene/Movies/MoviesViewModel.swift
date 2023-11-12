@@ -27,13 +27,13 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   
   var dataSource: [MovieItemViewModel] = []
   
-  private let apiMoview: APIMovie
+  private let moviesPagination: MoviesPagination
   private let availableGenres: AvailableGenres
   private let logger: Logger
   
-  init(apiMovie: APIMovie, availableGenres: AvailableGenres, logger: Logger) {
+  init(moviesPagination: MoviesPagination, availableGenres: AvailableGenres, logger: Logger) {
     self.availableGenres = availableGenres
-    self.apiMoview = apiMovie
+    self.moviesPagination = moviesPagination
     self.logger = logger
     
     super.init()
@@ -48,20 +48,18 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   
   // MARK: - Internal
   
-  func fetchData() {
-    Task {
-      self.loadingIndicator.onNext(true)
-      do {
-        let page = try await self.apiMoview.discoverMovie()
-        self.dataSource = page.result.compactMap { movieItem in
-          MovieItemViewModel(movieItem: movieItem, availableGenres: self.availableGenres)
-        }
-        self.refreshView.onNext(())
-      } catch {
-        self.logger.error(message: error)
-        self.error.onNext(CustomerError(description: error.localizedDescription))
-      }
-      self.loadingIndicator.onNext(false)
+  func refreshData() {
+    self.moviesPagination.reset()
+    observeFetchMovies()
+  }
+  
+  func fetchMore() {
+    observeFetchMovies()
+  }
+  
+  func displayCell(by indexPath: IndexPath) {
+    if indexPath.row + 5 > dataSource.count {
+      fetchMore()
     }
   }
   
@@ -70,6 +68,35 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   
   struct Output {
     let refreshViewTrigger: Driver<Void>
+  }
+}
+
+extension MoviesViewModel {
+  
+  private func fetchMovies() async throws -> [MovieItemViewModel] {
+    guard moviesPagination.canLoadMore else {
+      return []
+    }
+    let movieItems = try await moviesPagination.loadMore()
+    let newDSItems = movieItems.compactMap { movieItem in
+      MovieItemViewModel(movieItem: movieItem, availableGenres: self.availableGenres)
+    }
+    return newDSItems
+  }
+  
+  func observeFetchMovies() {
+    Task {
+      loadingIndicator.onNext(true)
+      do {
+        let newDSItems = try await fetchMovies()
+        dataSource.append(contentsOf: newDSItems)
+      } catch {
+        self.logger.error(message: error)
+        self.error.onNext(CustomerError(description: error.localizedDescription))
+      }
+      refreshView.onNext(())
+      loadingIndicator.onNext(false)
+    }
   }
   
 }
