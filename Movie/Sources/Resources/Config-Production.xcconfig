@@ -1,0 +1,14 @@
+//
+//  Config-Production.xcconfig
+//  Movie
+//
+//  Created by Bogdan Petkanych on 29.10.2023.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "Pods/Target Support Files/Pods-Movie/Pods-Movie.release.xcconfig"
+
+BASE_API_URL = https:/$()/api.themoviedb.org/3/
+TOKEN = eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MjcyNzY0MGIwM2M5MGFjMDU0ZjAwMDA3MTIwYzRiNiIsInN1YiI6IjY1M2Q1ODEwZTg5NGE2MDBlMmNkZTdjOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Pr_oqkcTq8N_Eqq_COuI28Ox61mcCBe9jWltVTFa48M

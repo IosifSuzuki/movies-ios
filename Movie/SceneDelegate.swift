@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let window = UIWindow(windowScene: windowScene)
     
     let navigationControllerStyle = AppNavigationController.Style.opaque
-    let appNavigationController = Assembler.sharedAssembler.resolver.resolve(AppNavigationController.self, argument: navigationControllerStyle)
+    let appNavigationController = Assembler.shared.resolver.resolve(AppNavigationController.self, argument: navigationControllerStyle)
     appNavigationController?.viewControllers = [MoviesViewController.initialize()]
     window.rootViewController = appNavigationController
     
