@@ -12,11 +12,12 @@ struct MovieItemViewModel {
   let title: String
   let genreIDs: [Int]
   let avarageRating: Double
-  let releaseDate: Date
+  let releaseDate: Date?
   private let availableGenres: AvailableGenres
   
   init?(movieItem: MovieItem, availableGenres: AvailableGenres) {
-    guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(movieItem.posterPath)") else {
+    guard let posterPath = movieItem.posterPath,
+          let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") else {
       return nil
     }
     self.availableGenres = availableGenres
@@ -27,7 +28,10 @@ struct MovieItemViewModel {
     self.releaseDate = movieItem.realeaseDate
   }
   
-  var yearText: String {
+  var yearText: String? {
+    guard let releaseDate else {
+      return nil
+    }
     let dateFormat = DateFormatter()
     dateFormat.dateFormat = "YYYY"
     return dateFormat.string(from: releaseDate)

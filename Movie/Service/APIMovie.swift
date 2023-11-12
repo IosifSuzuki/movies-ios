@@ -8,6 +8,6 @@
 import Foundation
 
 protocol APIMovie {
-  func discoverMovie(page: Int) async throws -> Page<MovieItem>
+  func discoverMovie(page: Int, sortBy: MovieSortBy) async throws -> Page<MovieItem>
   func genres() async throws -> Genres
 }

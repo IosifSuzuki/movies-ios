@@ -22,8 +22,8 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    bindToViewModel()
     setupView()
+    bindToViewModel()
     apply(theme: theme)
   }
   
@@ -47,6 +47,8 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
           message: customerError.description,
           preferredStyle: .alert
         )
+        let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel)
+        alertViewController.addAction(cancelAction)
         self.present(alertViewController, animated: true)
       })
       .disposed(by: disposeBag)

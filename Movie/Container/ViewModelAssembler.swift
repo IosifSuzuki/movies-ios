@@ -12,11 +12,10 @@ class ViewModelAssemble: Assembly {
   
   func assemble(container: Container) {
     container.register(MoviesViewModel.self) { resolver in
-      let moviesPagination = resolver.resolve(MoviesPagination.self)!
-      let availableGenres = resolver.resolve(AvailableGenres.self)!
+      let moviesDataSource = resolver.resolve(MoviesDataSource.self)!
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
       
-      return MoviesViewModel(moviesPagination: moviesPagination, availableGenres: availableGenres, logger: logger)
+      return MoviesViewModel(moviesDS: moviesDataSource, logger: logger)
     }
   }
   

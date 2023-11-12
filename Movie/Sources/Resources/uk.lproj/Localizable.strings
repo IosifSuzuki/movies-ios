@@ -8,4 +8,11 @@
 
 "Error" = "Помилка";
 "Search" = "Пошук";
+"Cancel" = "Скасувати";
+
 "MoviesViewController.title" = "Популярні фільми";
+"MoviesViewController.sortBy.text" = "Сортувати фільми за критеріями";
+
+"MovieSortBy.revenueDesc.text" = "Сортувати за доходом";
+"MovieSortBy.popularityDesc.text" = "Сортувати за популярністю";
+"MovieSortBy.voteAverageDesc.text" = "Сортувати за середнім балом";

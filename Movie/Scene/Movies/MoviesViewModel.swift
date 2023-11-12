@@ -11,29 +11,18 @@ import RxCocoa
 
 final class MoviesViewModel: BaseViewModel, ViewModel {
   
-  override var loadingIndicatorDriver: Driver<Bool> {
-    Observable
-      .combineLatest(availableGenres.isRefreshedList, loadingIndicator)
-      .map { (isRefreshedList, loadingIndicator) in
-        !isRefreshedList || loadingIndicator
-      }
-      .asDriver(onErrorDriveWith: Driver<Bool>.empty())
-  }
-  
-  var title: String? {
-    L10n.MoviesViewController.title
-  }
   private var refreshView = PublishSubject<Void>()
+  private var movieSortByItems = PublishSubject<[MovieSortByItem]>()
   
-  var dataSource: [MovieItemViewModel] = []
-  
-  private let moviesPagination: MoviesPagination
-  private let availableGenres: AvailableGenres
+  private var moviesDS: MoviesDataSource
   private let logger: Logger
   
-  init(moviesPagination: MoviesPagination, availableGenres: AvailableGenres, logger: Logger) {
-    self.availableGenres = availableGenres
-    self.moviesPagination = moviesPagination
+  var dataSource: DataSource {
+    moviesDS
+  }
+  
+  init(moviesDS: MoviesDataSource, logger: Logger) {
+    self.moviesDS = moviesDS
     self.logger = logger
     
     super.init()
@@ -41,15 +30,63 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   
   @discardableResult
   func transform(input: Input) -> Output {
+    input
+      .sortByTrigger
+      .drive(onNext: { [weak self] in
+        guard let self else {
+          return
+        }
+        
+        self.movieSortByItems.onNext(self.moviesDS.movieSortOptions.dataSource)
+      })
+      .disposed(by: disposeBag)
+    
+    input
+      .searchTrigger
+      .drive(onNext: { [weak self] text in
+        guard let self else {
+          return
+        }
+        
+        self.moviesDS.search(by: text)
+        self.refreshView.onNext(())
+      })
+      .disposed(by: disposeBag)
+    
     return Output(
-      refreshViewTrigger: refreshView.asDriver(onErrorDriveWith: Driver<()>.empty())
+      refreshViewTrigger: refreshView.asDriver(onErrorDriveWith: Driver<()>.empty()), 
+      sortByTrigger: movieSortByItems.asDriver(onErrorDriveWith: Driver<[MovieSortByItem]>.empty())
     )
+  }
+  
+  // MARK: - ViewModel
+  
+  var title: String? {
+    L10n.MoviesViewController.title
+  }
+  
+  // MARK: - BaseViewModel
+  
+  override var loadingIndicatorDriver: Driver<Bool> {
+    Observable
+      .combineLatest(moviesDS.availableGenres.isRefreshedList, loadingIndicator)
+      .map { (isRefreshedList, loadingIndicator) in
+        !isRefreshedList || loadingIndicator
+      }
+      .asDriver(onErrorDriveWith: Driver<Bool>.empty())
   }
   
   // MARK: - Internal
   
+  func select(movieSortByItem: MovieSortByItem) {
+    moviesDS.movieSortOptions.selectedOption = movieSortByItem.sortBy
+    
+    refreshData()
+  }
+  
   func refreshData() {
-    self.moviesPagination.reset()
+    moviesDS.reset()
+    
     observeFetchMovies()
   }
   
@@ -57,39 +94,30 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     observeFetchMovies()
   }
   
-  func displayCell(by indexPath: IndexPath) {
-    if indexPath.row + 5 > dataSource.count {
+  func scroll(to indexPath: IndexPath) {
+    if indexPath.row + 5 > moviesDS.numberOfRows(in: 0), moviesDS.canLoadMore {
       fetchMore()
     }
   }
   
   struct Input {
+    let sortByTrigger: Driver<Void>
+    let searchTrigger: Driver<String?>
   }
   
   struct Output {
     let refreshViewTrigger: Driver<Void>
+    let sortByTrigger: Driver<[MovieSortByItem]>
   }
 }
 
 extension MoviesViewModel {
   
-  private func fetchMovies() async throws -> [MovieItemViewModel] {
-    guard moviesPagination.canLoadMore else {
-      return []
-    }
-    let movieItems = try await moviesPagination.loadMore()
-    let newDSItems = movieItems.compactMap { movieItem in
-      MovieItemViewModel(movieItem: movieItem, availableGenres: self.availableGenres)
-    }
-    return newDSItems
-  }
-  
   func observeFetchMovies() {
     Task {
       loadingIndicator.onNext(true)
       do {
-        let newDSItems = try await fetchMovies()
-        dataSource.append(contentsOf: newDSItems)
+        try await moviesDS.loadMore()
       } catch {
         self.logger.error(message: error)
         self.error.onNext(CustomerError(description: error.localizedDescription))

@@ -8,4 +8,11 @@
 
 "Error" = "Error";
 "Search" = "Search";
+"Cancel" = "Cancel";
+
 "MoviesViewController.title" = "Popular Movies";
+"MoviesViewController.sortBy.text" = "Sort movies by criteria";
+
+"MovieSortBy.revenueDesc.text" = "Sort by revenue";
+"MovieSortBy.popularityDesc.text" = "Sort by popularity";
+"MovieSortBy.voteAverageDesc.text" = "Sort by vote average";

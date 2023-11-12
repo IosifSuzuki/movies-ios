@@ -7,11 +7,12 @@
 
 import Foundation
 
-class MoviesPagination: Pagination, Identify {
+final class MoviesPagination: Pagination, Identify {
   
   private let movie: APIMovie
   private let logger: Logger
   private var state: PaginationState
+  var selectedOption: MovieSortBy = .popularityDesc
   
   init(movies: APIMovie, logger: Logger) {
     self.movie = movies
@@ -19,7 +20,7 @@ class MoviesPagination: Pagination, Identify {
     self.state = .start
   }
   
-  //MARK: - Pagination
+  // MARK: - Pagination
   
   var canLoadMore: Bool {
     state != .finish
@@ -37,7 +38,13 @@ class MoviesPagination: Pagination, Identify {
       return []
     }
     state = .loading(page: page)
-    let result = try await movie.discoverMovie(page: page)
+    let result: Page<MovieItem>
+    do {
+      result = try await movie.discoverMovie(page: page, sortBy: selectedOption)
+    } catch {
+      state = .finish
+      throw error
+    }
     state = .loaded(page: page)
     if result.page == result.totalPages {
       logger.debug(message: "pagination has reached end")

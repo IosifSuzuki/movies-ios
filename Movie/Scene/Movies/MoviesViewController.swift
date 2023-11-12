@@ -7,10 +7,13 @@
 
 import UIKit
 import Swinject
+import RxSwift
+import RxCocoa
 
 final class MoviesViewController: BaseViewController<MoviesViewModel> {
   
   @IBOutlet private weak var tableView: UITableView!
+  private weak var sortByBarButtonItem: UIBarButtonItem?
   
   var searchController: UISearchController!
   var searchTextField: UISearchTextField {
@@ -26,12 +29,33 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   override func bindToViewModel() {
     super.bindToViewModel()
     
-    let input = MoviesViewModel.Input()
+    guard let sortByTrigger = sortByBarButtonItem?.rx.tap.asDriver() else {
+      fatalError("sortByBarButtonItem must already be initialized")
+    }
+    
+    let searchTrigger = searchController
+      .searchBar
+      .rx
+      .text
+      .throttle(.seconds(1), latest: true, scheduler: MainScheduler.asyncInstance)
+      .asDriver(onErrorDriveWith: Driver<String?>.empty())
+    
+    let input = MoviesViewModel.Input(
+      sortByTrigger: sortByTrigger, 
+      searchTrigger: searchTrigger
+    )
+    
     let output = viewModel.transform(input: input)
+    
     output.refreshViewTrigger.drive(onNext: { [weak self] _ in
       self?.tableView.refreshControl?.endRefreshing()
       self?.tableView.reloadData()
     }).disposed(by: disposeBag)
+    
+    output.sortByTrigger.drive(onNext: { [weak self] dataSource in
+      self?.showActionSheet(dataSource: dataSource)
+    }).disposed(by: disposeBag)
+    
   }
   
   override func apply(theme: Theme) {
@@ -60,7 +84,6 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     tableView.registerCell(forClass: MovieItemTableViewCell.self)
     
     let refreshControl = UIRefreshControl()
-    refreshControl.attributedTitle = .init(string: "Refresh")
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     tableView.refreshControl = refreshControl
     
@@ -69,16 +92,41 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     searchController.searchBar.showsCancelButton = false
     
     let rightBarButtonItem = UIBarButtonItem(image: Asset.Media.icFilter.image, style: .plain, target: nil, action: nil)
+    sortByBarButtonItem = rightBarButtonItem
     navigationItem.rightBarButtonItem = rightBarButtonItem
     navigationItem.searchController = searchController
   }
   
-  enum Defaults {
-    static let heightOfCell: CGFloat = 200
-  }
+  // MARK: - Action
   
   @objc func refresh(_ control: UIRefreshControl) {
     viewModel.refreshData()
+  }
+  
+  private func showActionSheet(dataSource: [MovieSortByItem]) {
+    let alertViewController = UIAlertController(title: L10n.MoviesViewController.SortBy.text, message: nil, preferredStyle: .actionSheet)
+    
+    dataSource.map { movieSortByItem in
+      let alertAction = UIAlertAction(title: movieSortByItem.title, style: .default) { [weak self] _ in
+        self?.viewModel.select(movieSortByItem: movieSortByItem)
+        
+        alertViewController.dismiss(animated: true)
+      }
+      alertAction.setValue(movieSortByItem.isSelected, forKey: "checked")
+      
+      return alertAction
+    }.forEach { alertAction in
+      alertViewController.addAction(alertAction)
+    }
+    
+    let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel)
+    alertViewController.addAction(cancelAction)
+    
+    self.present(alertViewController, animated: true)
+  }
+  
+  enum Defaults {
+    static let heightOfCell: CGFloat = 200
   }
   
 }
@@ -88,16 +136,20 @@ extension MoviesViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(forClass: MovieItemTableViewCell.self, indexPath: indexPath)
-    let itemViewModel = viewModel.dataSource[indexPath.row]
-    
+    let viewModel = viewModel.dataSource.item(by: indexPath)
     cell.apply(theme: theme)
-    cell.setup(viewModel: itemViewModel)
+    switch viewModel {
+    case let viewModel as MovieItemViewModel:
+      cell.setup(viewModel: viewModel)
+    default:
+      fatalError("unprocessed case")
+    }
     
     return cell
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    viewModel.dataSource.count
+    viewModel.dataSource.numberOfRows(in: section)
   }
   
 }
@@ -110,7 +162,7 @@ extension MoviesViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    viewModel.displayCell(by: indexPath)
+    viewModel.scroll(to: indexPath)
   }
   
 }

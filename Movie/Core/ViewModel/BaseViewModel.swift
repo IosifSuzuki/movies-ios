@@ -12,6 +12,7 @@ import RxCocoa
 class BaseViewModel {
   let loadingIndicator = PublishSubject<Bool>()
   let error = PublishSubject<CustomerError>()
+  var disposeBag = DisposeBag()
   
   var errorDriver: Driver<CustomerError> {
     error.asDriver(onErrorDriveWith: Driver<CustomerError>.empty())

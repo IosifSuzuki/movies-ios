@@ -10,7 +10,7 @@ import Alamofire
 
 enum MovieEndpoint: EndpointConfigurable {
   
-  case discover(page: Int)
+  case discover(page: Int, sortBy: MovieSortBy)
   case genres
   
   var method: HTTPMethod {
@@ -33,9 +33,10 @@ enum MovieEndpoint: EndpointConfigurable {
   
   var queryParams: [URLQueryItem] {
     switch self {
-    case let .discover(page: page):
+    case let .discover(page: page, sortBy: sortBy):
       return [
-        URLQueryItem(name: "page", value: "\(page)")
+        URLQueryItem(name: "page", value: "\(page)"),
+        URLQueryItem(name: "sort_by", value: "\(sortBy.rawValue)"),
       ]
     case .genres:
       return []
