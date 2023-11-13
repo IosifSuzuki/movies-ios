@@ -12,12 +12,15 @@ enum MovieEndpoint: EndpointConfigurable {
   
   case discover(page: Int, sortBy: MovieSortBy)
   case genres
+  case movie(id: Int)
   
   var method: HTTPMethod {
     switch self {
     case .discover:
       return .get
     case .genres:
+      return .get
+    case .movie:
       return .get
     }
   }
@@ -28,6 +31,8 @@ enum MovieEndpoint: EndpointConfigurable {
       return "discover/movie"
     case .genres:
       return "genre/movie/list"
+    case let .movie(id):
+      return "movie/\(id)"
     }
   }
   
@@ -39,6 +44,8 @@ enum MovieEndpoint: EndpointConfigurable {
         URLQueryItem(name: "sort_by", value: "\(sortBy.rawValue)"),
       ]
     case .genres:
+      return []
+    case .movie:
       return []
     }
   }
@@ -52,6 +59,8 @@ enum MovieEndpoint: EndpointConfigurable {
     case .discover:
       return nil
     case .genres:
+      return nil
+    case .movie:
       return nil
     }
   }

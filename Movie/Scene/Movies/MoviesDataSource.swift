@@ -52,7 +52,7 @@ class MoviesDataSource {
   }
   
   func loadMore() async throws {
-    guard moviesPagination.canLoadMore else {
+    guard canLoadMore else {
       return
     }
     dataSource.append(contentsOf: try await fetchMovies())

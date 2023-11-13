@@ -12,6 +12,7 @@ import RxCocoa
 final class MoviesViewModel: BaseViewModel, ViewModel {
   
   private var refreshView = PublishSubject<Void>()
+  private var movieDetailID = PublishSubject<Int>()
   private var movieSortByItems = PublishSubject<[MovieSortByItem]>()
   
   private var moviesDS: MoviesDataSource
@@ -55,7 +56,8 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     
     return Output(
       refreshViewTrigger: refreshView.asDriver(onErrorDriveWith: Driver<()>.empty()), 
-      sortByTrigger: movieSortByItems.asDriver(onErrorDriveWith: Driver<[MovieSortByItem]>.empty())
+      sortByTrigger: movieSortByItems.asDriver(onErrorDriveWith: Driver<[MovieSortByItem]>.empty()), 
+      movieDetailTrigger: movieDetailID.asDriver(onErrorDriveWith: Driver<Int>.empty())
     )
   }
   
@@ -84,6 +86,10 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     refreshData()
   }
   
+  func select(movieItem: MovieItemViewModel) {
+    movieDetailID.onNext(movieItem.id)
+  }
+  
   func refreshData() {
     moviesDS.reset()
     
@@ -108,6 +114,7 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   struct Output {
     let refreshViewTrigger: Driver<Void>
     let sortByTrigger: Driver<[MovieSortByItem]>
+    let movieDetailTrigger: Driver<Int>
   }
 }
 

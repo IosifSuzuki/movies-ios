@@ -9,6 +9,10 @@ import UIKit
 
 class AppNavigationController: UINavigationController, ThemeDependency {
   
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    topViewController?.preferredStatusBarStyle ?? .default
+  }
+  
   var theme: Theme
   var style: Style
   
@@ -35,10 +39,12 @@ class AppNavigationController: UINavigationController, ThemeDependency {
   
   func setupApprearance() {
     let barAppearance = UINavigationBarAppearance()
-    barAppearance.titleTextAttributes = [
+    
+    let titleTextAttributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: theme.titleColor,
       .font: theme.font(style: .regular, size: 18) as Any
     ]
+    barAppearance.titleTextAttributes = titleTextAttributes
     switch style {
     case .opaque:
       barAppearance.configureWithOpaqueBackground()
@@ -46,6 +52,12 @@ class AppNavigationController: UINavigationController, ThemeDependency {
     case .transparent:
       barAppearance.configureWithTransparentBackground()
     }
+    
+    let buttonAppearance = UIBarButtonItemAppearance()
+    buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+    barAppearance.buttonAppearance = buttonAppearance
+    navigationBar.tintColor = theme.titleColor
+    
     navigationBar.standardAppearance = barAppearance
     navigationBar.scrollEdgeAppearance = barAppearance
     navigationBar.compactAppearance = barAppearance

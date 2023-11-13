@@ -51,7 +51,10 @@ final class MovieItemTableViewCell: BaseTableViewCell {
         self?.addShadow()
         self?.applyTextColor(to: imageResult.image.isDark)
         
-        self?.titleLabel.text = "\(viewModel.title) \(viewModel.yearText)"
+        self?.titleLabel.text = "\(viewModel.title)"
+        if let yearText = viewModel.yearText {
+          self?.titleLabel.text?.append(" \(yearText)")
+        }
         self?.genresLabel.text = viewModel.genresText
         self?.ratingLabel.text = viewModel.avarageRatingText
       case let .failure(error):

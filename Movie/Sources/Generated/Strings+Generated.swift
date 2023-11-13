@@ -40,6 +40,10 @@ public enum L10n {
       /// Sort movies by criteria
       public static let text = L10n.tr("Localizable", "MoviesViewController.sortBy.text", fallback: "Sort movies by criteria")
     }
+    public enum WatchTheTrailer {
+      /// Trailer
+      public static let text = L10n.tr("Localizable", "MoviesViewController.watchTheTrailer.text", fallback: "Trailer")
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

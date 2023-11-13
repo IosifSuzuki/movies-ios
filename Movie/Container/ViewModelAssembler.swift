@@ -17,6 +17,12 @@ class ViewModelAssemble: Assembly {
       
       return MoviesViewModel(moviesDS: moviesDataSource, logger: logger)
     }
+    container.register(MovieDetailViewModel.self) { (resolver, movieID: Int) in
+      let apiMovie = resolver.resolve(APIMovie.self)!
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      
+      return MovieDetailViewModel(movieID: movieID, apiMovie: apiMovie, logger: logger)
+    }
   }
   
 }

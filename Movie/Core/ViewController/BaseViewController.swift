@@ -9,6 +9,7 @@ import UIKit
 import Swinject
 import RxSwift
 import RxCocoa
+import AVKit
 
 class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, ThemeDependency {
   
@@ -18,6 +19,10 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
   var disposeBag = DisposeBag()
   
   private let loaderView = HorizontalGradientLoader()
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    .darkContent
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -66,8 +71,20 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
   
   func setupView() {
     title = viewModel.title
+    navigationItem.backButtonDisplayMode = .minimal
     
     setupLoader()
+  }
+  
+  func playVideo(remoteURL: URL) {
+    let player = AVPlayer(url: remoteURL)
+    let playerViewController = AVPlayerViewController()
+    playerViewController.player = player
+    
+    present(playerViewController, animated: true) {
+      player.play()
+    }
+    
   }
   
   // MARK: - Static methods
