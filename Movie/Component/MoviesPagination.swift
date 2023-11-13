@@ -23,7 +23,12 @@ final class MoviesPagination: Pagination, Identify {
   // MARK: - Pagination
   
   var canLoadMore: Bool {
-    state != .finish
+    switch state {
+    case .loading, .finish:
+      return false
+    default:
+      return true
+    }
   }
   
   func reset() {

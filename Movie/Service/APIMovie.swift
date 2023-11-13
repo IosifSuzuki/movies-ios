@@ -10,4 +10,5 @@ import Foundation
 protocol APIMovie {
   func discoverMovie(page: Int, sortBy: MovieSortBy) async throws -> Page<MovieItem>
   func genres() async throws -> Genres
+  func movie(by id: Int) async throws -> MovieDetail
 }

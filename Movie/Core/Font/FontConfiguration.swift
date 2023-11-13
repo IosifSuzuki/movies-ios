@@ -28,12 +28,7 @@ class FontConfiguration {
       if let fontDataProvider = CGDataProvider(url: fontURL as CFURL) {
         if let cgfont = CGFont(fontDataProvider) {
           var error: Unmanaged<CFError>?
-          let success = CTFontManagerRegisterGraphicsFont(cgfont, &error)
-          if !success {
-            throw FontFailure.registrationFail(error?.takeUnretainedValue().localizedDescription ??
-              "CTFontManagerRegisterGraphicsFont failed for \(font.name)"
-            )
-          }
+          CTFontManagerRegisterGraphicsFont(cgfont, &error)
         } else {
           throw FontFailure.creationFailed(font.name)
         }

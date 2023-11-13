@@ -56,6 +56,14 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
       self?.showActionSheet(dataSource: dataSource)
     }).disposed(by: disposeBag)
     
+    output.movieDetailTrigger.drive(onNext: { [weak self] movieID in
+      guard let viewController = Assembler.shared.resolver.resolve(MovieDetailViewController.self, argument: movieID) else {
+        fatalError("MovieDetailViewController has failed resolved")
+      }
+      
+      self?.navigationController?.pushViewController(viewController, animated: true)
+    }).disposed(by: disposeBag)
+    
   }
   
   override func apply(theme: Theme) {
@@ -163,6 +171,12 @@ extension MoviesViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     viewModel.scroll(to: indexPath)
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let viewModel = viewModel.dataSource.item(by: indexPath) as? MovieItemViewModel {
+      self.viewModel.select(movieItem: viewModel)
+    }
   }
   
 }

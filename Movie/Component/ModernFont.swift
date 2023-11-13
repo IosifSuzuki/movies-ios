@@ -11,14 +11,14 @@ import UIKit.UIFont
 class ModernFont: AppFont, Identify {
   
   func font(for style: FontStyle) throws -> UIFont {
-    guard let font = Font(style: style).font else {
+    guard let font = AppFont(style: style).font else {
       throw ApplicationError(reason: "font must be register before use in app")
     }
     
     return font
   }
   
-  enum Font: String {
+  enum AppFont: String {
     case interBold = "Inter-Bold.ttf"
     case interMedium = "Inter-Medium.ttf"
     case interRegular = "Inter-Regular.ttf"
@@ -35,7 +35,7 @@ class ModernFont: AppFont, Identify {
     }
     
     var font: UIFont? {
-      UIFont(name: self.rawValue, size: .zero)
+      Font(fileName: self.rawValue)?.font(with: 1)
     }
   }
   

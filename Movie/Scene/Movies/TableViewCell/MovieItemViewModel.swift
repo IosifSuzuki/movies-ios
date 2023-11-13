@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieItemViewModel {
+  let id: Int
   let posterURL: URL
   let title: String
   let genreIDs: [Int]
@@ -20,6 +21,7 @@ struct MovieItemViewModel {
           let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") else {
       return nil
     }
+    self.id = movieItem.id
     self.availableGenres = availableGenres
     self.posterURL = url
     self.title = movieItem.title

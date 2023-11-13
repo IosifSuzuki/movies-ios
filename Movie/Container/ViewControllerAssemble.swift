@@ -26,6 +26,16 @@ class ViewControllerAssemble: Assembly {
       
       return viewController
     }
+    container.register(MovieDetailViewController.self) { (resolver, movieID: Int) in
+      let theme = resolver.resolve(Theme.self, name: ModernTheme.identifier)
+      let viewModel = resolver.resolve(MovieDetailViewModel.self, argument: movieID)
+      
+      let viewController = self.unwrapViewController(vcType: MovieDetailViewController.self)
+      viewController.theme = theme
+      viewController.viewModel = viewModel
+      
+      return viewController
+    }
   }
   
 }

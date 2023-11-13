@@ -88,4 +88,13 @@ extension NetworkOperation: APIMovie {
     
     return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
   }
+  
+  func movie(by id: Int) async throws -> MovieDetail {
+    let endpointRequest = endpointRequest(endpoitConfigurable: MovieEndpoint.movie(id: id))
+    let jsonDecoder = self.jsonDecoder
+    let dateFormatter = DateFormatter(dateFormat: "YYYY-MM-DD")
+    jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
+    
+    return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
+  }
 }
