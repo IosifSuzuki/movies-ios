@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lKY-9b-R1o">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Y6W-OH-hqX" id="rim-Mx-yZv"/>
@@ -31,7 +31,7 @@
                         <constraints>
                             <constraint firstItem="lKY-9b-R1o" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="2F9-cR-UB5"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="lKY-9b-R1o" secondAttribute="trailing" id="EKw-o4-srD"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="lKY-9b-R1o" secondAttribute="bottom" id="UNM-lu-hXA"/>
+                            <constraint firstAttribute="bottom" secondItem="lKY-9b-R1o" secondAttribute="bottom" id="tOa-f2-p7i"/>
                             <constraint firstItem="lKY-9b-R1o" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="xih-1W-s3y"/>
                         </constraints>
                     </view>

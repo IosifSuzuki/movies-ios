@@ -49,6 +49,7 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     
     output.refreshViewTrigger.drive(onNext: { [weak self] _ in
       self?.tableView.refreshControl?.endRefreshing()
+      self?.tableView.setContentOffset(.zero, animated: true)
       self?.tableView.reloadData()
     }).disposed(by: disposeBag)
     
@@ -94,10 +95,10 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     tableView.refreshControl = refreshControl
+//    tableView.contentInset.bottom = view.safeAreaInsets.bottom
     
     searchController = UISearchController()
-    searchController.obscuresBackgroundDuringPresentation = true
-    searchController.searchBar.showsCancelButton = false
+    searchController.searchBar.delegate = self
     
     let rightBarButtonItem = UIBarButtonItem(image: Asset.Media.icFilter.image, style: .plain, target: nil, action: nil)
     sortByBarButtonItem = rightBarButtonItem
@@ -177,6 +178,19 @@ extension MoviesViewController: UITableViewDelegate {
     if let viewModel = viewModel.dataSource.item(by: indexPath) as? MovieItemViewModel {
       self.viewModel.select(movieItem: viewModel)
     }
+  }
+  
+}
+
+// MARK: - UISearchBarDelegate
+extension MoviesViewController: UISearchBarDelegate {
+  
+  func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    viewModel.shouldBeginEditingSearchBar()
+  }
+  
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    viewModel.cancelSearch()
   }
   
 }

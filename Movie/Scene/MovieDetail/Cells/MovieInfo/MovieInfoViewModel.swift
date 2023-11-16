@@ -15,13 +15,18 @@ struct MovieInfoViewModel {
   
   init(movieDetail: MovieDetail) {
     title = movieDetail.title
+    
     let productionCountries = movieDetail.productionCountries.map { $0.name }.joined(separator: ",")
-    var subtitle = productionCountries
+    var subtitleComponents: [String] = []
+    if !productionCountries.isEmpty {
+      subtitleComponents.append(productionCountries)
+    }
     if let realeaseDate = movieDetail.realeaseDate {
       let productionDateText =  realeaseDate.formatted(dateFormat: "YYYY")
-      subtitle.append(", \(productionDateText)")
+      subtitleComponents.append(productionDateText)
     }
-    self.subtitle = subtitle
+    self.subtitle = subtitleComponents.joined(separator: ", ")
+    
     genres = movieDetail.genres.map { $0.name }.joined(separator: ", ")
   }
   

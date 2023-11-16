@@ -480,8 +480,8 @@
 			isa = PBXGroup;
 			children = (
 				844AACE72AED88F1007BCDE5 /* Alert.swift */,
-				8406B4582B014A0300DC4806 /* DTO */,
 				8406B44D2B011A4E00DC4806 /* PaginationState.swift */,
+				8406B4582B014A0300DC4806 /* DTO */,
 				844AAD012AEECDFB007BCDE5 /* Network */,
 			);
 			path = Model;
