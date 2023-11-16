@@ -47,6 +47,10 @@ class MoviesDataSource {
   }
   
   func reset() {
+    guard canLoadMore else {
+      return
+    }
+    
     dataSource = []
     moviesPagination.reset()
   }

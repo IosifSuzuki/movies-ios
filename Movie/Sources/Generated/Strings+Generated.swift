@@ -45,6 +45,10 @@ public enum L10n {
       public static let text = L10n.tr("Localizable", "MoviesViewController.watchTheTrailer.text", fallback: "Trailer")
     }
   }
+  public enum Offline {
+    /// You are offline. Please, enable your Wi-Fi or connect using cellular data.
+    public static let message = L10n.tr("Localizable", "Offline.message", fallback: "You are offline. Please, enable your Wi-Fi or connect using cellular data.")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

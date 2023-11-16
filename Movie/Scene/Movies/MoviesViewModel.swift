@@ -22,11 +22,11 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     moviesDS
   }
   
-  init(moviesDS: MoviesDataSource, logger: Logger) {
+  init(moviesDS: MoviesDataSource, logger: Logger, networkReachability: NetworkReachability) {
     self.moviesDS = moviesDS
     self.logger = logger
     
-    super.init()
+    super.init(networkReachability: networkReachability)
   }
   
   @discardableResult
@@ -81,22 +81,56 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   // MARK: - Internal
   
   func select(movieSortByItem: MovieSortByItem) {
+    guard networkReachability.isReachability else {
+      self.showOfflineMassage()
+      return
+    }
+    
     moviesDS.movieSortOptions.selectedOption = movieSortByItem.sortBy
     
     refreshData()
   }
   
   func select(movieItem: MovieItemViewModel) {
+    guard networkReachability.isReachability else {
+      self.showOfflineMassage()
+      return
+    }
+    
     movieDetailID.onNext(movieItem.id)
   }
   
+  func shouldBeginEditingSearchBar() -> Bool {
+    guard networkReachability.isReachability else {
+      self.showOfflineMassage()
+      return false
+    }
+    
+    return true
+  }
+  
+  func cancelSearch() {
+    self.moviesDS.search(by: "")
+    self.refreshView.onNext(())
+  }
+  
   func refreshData() {
+    guard networkReachability.isReachability else {
+      refreshView.onNext(())
+      return
+    }
+    
     moviesDS.reset()
     
     observeFetchMovies()
   }
   
   func fetchMore() {
+    guard networkReachability.isReachability else {
+      refreshView.onNext(())
+      return
+    }
+    
     observeFetchMovies()
   }
   
@@ -105,6 +139,8 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
       fetchMore()
     }
   }
+  
+  // MARK: - Internal models
   
   struct Input {
     let sortByTrigger: Driver<Void>
@@ -118,7 +154,8 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   }
 }
 
-extension MoviesViewModel {
+// MARK: - Private
+private extension MoviesViewModel {
   
   func observeFetchMovies() {
     Task {
@@ -127,11 +164,16 @@ extension MoviesViewModel {
         try await moviesDS.loadMore()
       } catch {
         self.logger.error(message: error)
-        self.error.onNext(CustomerError(description: error.localizedDescription))
+        self.alert.onNext(Alert.error(description: error.localizedDescription))
       }
       refreshView.onNext(())
       loadingIndicator.onNext(false)
     }
+  }
+  
+  func showOfflineMassage() {
+    let alertModel = Alert(title: nil, description: L10n.Offline.message)
+    self.alert.onNext(alertModel)
   }
   
 }

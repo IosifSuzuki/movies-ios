@@ -20,10 +20,12 @@ class MovieDetailViewModel: BaseViewModel, ViewModel {
   let logger: Logger
   var dataSource: [Cells] = []
   
-  init(movieID: Int, apiMovie: APIMovie, logger: Logger) {
+  init(movieID: Int, apiMovie: APIMovie, logger: Logger, networkReachability: NetworkReachability) {
     self.movieID = movieID
     self.apiMovie = apiMovie
     self.logger = logger
+    
+    super.init(networkReachability: networkReachability)
   }
   
   // MARK: - ViewModel
@@ -50,7 +52,7 @@ class MovieDetailViewModel: BaseViewModel, ViewModel {
         
       } catch {
         logger.error(message: "fetch movie by id", err: error)
-        self.error.onNext(CustomerError(description: error.localizedDescription))
+        self.alert.onNext(Alert.error(description: error.localizedDescription))
       }
       loadingIndicator.onNext(false)
       refreshViewSubject.onNext(())
