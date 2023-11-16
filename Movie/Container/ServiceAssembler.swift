@@ -57,6 +57,14 @@ class ServiceAssemble: Assembly {
       
       return MoviesDataSource(moviesPagination: moviesPagination, availableGenres: availableGenres)
     }
+    container.register(NetworkReachability.self) { resolver in
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      
+      guard let nrComponent = NRComponent(logger: logger) else {
+        fatalError("It has failed initialization NRComponent")
+      }
+      return nrComponent
+    }
   }
   
 }

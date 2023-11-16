@@ -42,19 +42,12 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
   
   func bindToViewModel() {
     viewModel
-      .errorDriver
-      .drive(onNext: { [weak self] customerError in
+      .alertDriver
+      .drive(onNext: { [weak self] alert in
         guard let self else {
           return
         }
-        let alertViewController = UIAlertController(
-          title: customerError.title,
-          message: customerError.description,
-          preferredStyle: .alert
-        )
-        let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel)
-        alertViewController.addAction(cancelAction)
-        self.present(alertViewController, animated: true)
+        self.showAlert(title: alert.title, message: alert.description)
       })
       .disposed(by: disposeBag)
     
@@ -85,6 +78,15 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
       player.play()
     }
     
+  }
+  
+  func showAlert(title: String?, message: String?) {
+    let alert = UIAlertController(title: title ?? "", message: message ?? "", preferredStyle: .alert)
+    let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel)
+    
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true)
   }
   
   // MARK: - Static methods

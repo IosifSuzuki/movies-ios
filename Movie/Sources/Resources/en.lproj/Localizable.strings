@@ -10,6 +10,8 @@
 "Search" = "Search";
 "Cancel" = "Cancel";
 
+"Offline.message" = "You are offline. Please, enable your Wi-Fi or connect using cellular data.";
+
 "MoviesViewController.title" = "Popular Movies";
 "MoviesViewController.sortBy.text" = "Sort movies by criteria";
 

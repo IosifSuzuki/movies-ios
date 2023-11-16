@@ -22,11 +22,11 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     moviesDS
   }
   
-  init(moviesDS: MoviesDataSource, logger: Logger) {
+  init(moviesDS: MoviesDataSource, logger: Logger, networkReachability: NetworkReachability) {
     self.moviesDS = moviesDS
     self.logger = logger
     
-    super.init()
+    super.init(networkReachability: networkReachability)
   }
   
   @discardableResult
@@ -127,7 +127,7 @@ extension MoviesViewModel {
         try await moviesDS.loadMore()
       } catch {
         self.logger.error(message: error)
-        self.error.onNext(CustomerError(description: error.localizedDescription))
+        self.alert.onNext(Alert.error(description: error.localizedDescription))
       }
       refreshView.onNext(())
       loadingIndicator.onNext(false)

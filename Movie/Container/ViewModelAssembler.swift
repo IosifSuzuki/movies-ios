@@ -14,14 +14,21 @@ class ViewModelAssemble: Assembly {
     container.register(MoviesViewModel.self) { resolver in
       let moviesDataSource = resolver.resolve(MoviesDataSource.self)!
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      let networkReachability = resolver.resolve(NetworkReachability.self)!
       
-      return MoviesViewModel(moviesDS: moviesDataSource, logger: logger)
+      return MoviesViewModel(moviesDS: moviesDataSource, 
+                             logger: logger,
+                             networkReachability: networkReachability)
     }
     container.register(MovieDetailViewModel.self) { (resolver, movieID: Int) in
       let apiMovie = resolver.resolve(APIMovie.self)!
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      let networkReachability = resolver.resolve(NetworkReachability.self)!
       
-      return MovieDetailViewModel(movieID: movieID, apiMovie: apiMovie, logger: logger)
+      return MovieDetailViewModel(movieID: movieID, 
+                                  apiMovie: apiMovie,
+                                  logger: logger,
+                                  networkReachability: networkReachability)
     }
   }
   
