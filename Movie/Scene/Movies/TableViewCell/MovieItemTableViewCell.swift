@@ -44,10 +44,16 @@ final class MovieItemTableViewCell: BaseTableViewCell {
   
   func setup(viewModel: MovieItemViewModel) {
     downloadImageTask?.cancel()
-    downloadImageTask = KingfisherManager.shared.retrieveImage(with: viewModel.posterURL, options: [.cacheOriginalImage]) { [weak self] result in
+    
+    guard let posterURL = viewModel.posterURL(by: posterImageView.bounds.width) else {
+      return
+    }
+    posterImageView.contentMode = .top
+    let posterImageViewBounds = posterImageView.bounds
+    downloadImageTask = KingfisherManager.shared.retrieveImage(with: posterURL, options: [.cacheOriginalImage]) { [weak self] result in
       switch result {
       case let .success(imageResult):
-        self?.posterImageView.image = imageResult.image
+        self?.posterImageView.image = imageResult.image.resizeTopAlignedToFill(newWidth: posterImageViewBounds.width)
         self?.addShadow()
         self?.applyTextColor(to: imageResult.image.isDark)
         

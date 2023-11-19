@@ -9,21 +9,27 @@ import Foundation
 
 struct MovieItemViewModel {
   let id: Int
-  let posterURL: URL
   let title: String
   let genreIDs: [Int]
   let avarageRating: Double
   let releaseDate: Date?
-  private let availableGenres: AvailableGenres
   
-  init?(movieItem: MovieItem, availableGenres: AvailableGenres) {
-    guard let posterPath = movieItem.posterPath,
-          let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") else {
+  private let posterPath: String
+  private let availableGenres: AvailableGenres
+  private let logger: Logger
+  private let movieExternalSource: MovieExternalSource
+  
+  init?(movieItem: MovieItem, availableGenres: AvailableGenres, movieExternalSource: MovieExternalSource, logger: Logger) {
+    guard let posterPath = movieItem.posterPath else {
+      logger.warning(message: "posterPath has nil value")
       return nil
     }
+    
+    self.logger = logger
+    self.movieExternalSource = movieExternalSource
     self.id = movieItem.id
     self.availableGenres = availableGenres
-    self.posterURL = url
+    self.posterPath = posterPath
     self.title = movieItem.title
     self.genreIDs = movieItem.genreIDs
     self.avarageRating = movieItem.voteAverage
@@ -47,5 +53,18 @@ struct MovieItemViewModel {
   
   var avarageRatingText: String {
     "\(avarageRating)"
+  }
+  
+  func posterURL(by width: CGFloat) -> URL? {
+    let externalURL: URL?
+    do {
+      let movieImageSize = try movieExternalSource.posterMovieImageSizeToFit(width)
+      externalURL = try movieExternalSource.posterURL(sourcePath: posterPath, size: movieImageSize)
+    } catch {
+      externalURL = nil
+      logger.error(message: "prepare poster url has failed", err: error)
+    }
+    
+    return externalURL
   }
 }

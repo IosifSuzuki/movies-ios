@@ -7,9 +7,11 @@
 
 import Foundation
 
-class MoviesDataSource {
+final class MoviesDataSource {
     
   let availableGenres: AvailableGenres
+  let movieConfiguration: APIMovieConfiguration
+  let logger: Logger
   var movieSortOptions = MovieSortOptions() {
     willSet {
       moviesPagination.selectedOption = newValue.selectedOption
@@ -30,9 +32,11 @@ class MoviesDataSource {
     }
   }
   
-  init(moviesPagination: MoviesPagination, availableGenres: AvailableGenres) {
+  init(moviesPagination: MoviesPagination, availableGenres: AvailableGenres, movieConfiguration: APIMovieConfiguration, logger: Logger) {
     self.moviesPagination = moviesPagination
     self.availableGenres = availableGenres
+    self.movieConfiguration = movieConfiguration
+    self.logger = logger
   }
   
   // MARK: - Internal
@@ -97,7 +101,7 @@ private extension MoviesDataSource {
     }
     let movieItems = try await moviesPagination.loadMore()
     let newDSItems = movieItems.compactMap { movieItem in
-      MovieItemViewModel(movieItem: movieItem, availableGenres: availableGenres)
+      MovieItemViewModel(movieItem: movieItem, availableGenres: availableGenres, movieExternalSource: movieConfiguration, logger: logger)
     }
     return newDSItems
   }

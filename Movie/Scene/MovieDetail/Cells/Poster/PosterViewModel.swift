@@ -8,13 +8,30 @@
 import Foundation
 
 struct PosterViewModel {
-  let posterURL: URL
+  private let posterPath: String
+  private let movieExternalSource: MovieExternalSource
+  let logger: Logger
   
-  init?(movieDetail: MovieDetail) {
-    guard let posterPath = movieDetail.posterPath,
-          let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") else {
+  init?(movieDetail: MovieDetail, movieExternalSource: MovieExternalSource, logger: Logger) {
+    guard let posterPath = movieDetail.posterPath else {
       return nil
     }
-    posterURL = url
+    
+    self.posterPath = posterPath
+    self.movieExternalSource = movieExternalSource
+    self.logger = logger
+  }
+  
+  func posterURL(by width: CGFloat) -> URL? {
+    let externalURL: URL?
+    do {
+      let movieImageSize = try movieExternalSource.posterMovieImageSizeToFit(width)
+      externalURL = try movieExternalSource.posterURL(sourcePath: posterPath, size: movieImageSize)
+    } catch {
+      externalURL = nil
+      logger.error(message: "prepare poster url has failed", err: error)
+    }
+    
+    return externalURL
   }
 }

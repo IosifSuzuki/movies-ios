@@ -15,7 +15,7 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   private var movieDetailID = PublishSubject<Int>()
   private var movieSortByItems = PublishSubject<[MovieSortByItem]>()
   
-  private var moviesDS: MoviesDataSource
+  private let moviesDS: MoviesDataSource
   private let logger: Logger
   
   var dataSource: DataSource {
@@ -71,9 +71,9 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
   
   override var loadingIndicatorDriver: Driver<Bool> {
     Observable
-      .combineLatest(moviesDS.availableGenres.isRefreshedList, loadingIndicator)
-      .map { (isRefreshedList, loadingIndicator) in
-        !isRefreshedList || loadingIndicator
+      .combineLatest(moviesDS.availableGenres.isRefreshedList, loadingIndicator, moviesDS.movieConfiguration.isReady)
+      .map { (isRefreshedList, loadingIndicator, movieConfigurationIsReady) in
+        !isRefreshedList || loadingIndicator || !movieConfigurationIsReady
       }
       .asDriver(onErrorDriveWith: Driver<Bool>.empty())
   }

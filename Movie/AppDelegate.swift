@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func settingsAfterLaunchingApplication() {
     Assembler.shared.resolver.resolve(AvailableGenres.self)?.reloadList()
+    Assembler.shared.resolver.resolve(APIMovieConfiguration.self)?.fetchConfig()
     
     do {
       try FontConfiguration.registerFonts()

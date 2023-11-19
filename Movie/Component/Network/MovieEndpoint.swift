@@ -13,6 +13,7 @@ enum MovieEndpoint: EndpointConfigurable {
   case discover(page: Int, sortBy: MovieSortBy)
   case genres
   case movie(id: Int)
+  case config
   
   var method: HTTPMethod {
     switch self {
@@ -22,31 +23,37 @@ enum MovieEndpoint: EndpointConfigurable {
       return .get
     case .movie:
       return .get
+    case .config:
+      return .get
     }
   }
   
   var path: String {
     switch self {
     case .discover:
-      return "discover/movie"
+      "discover/movie"
     case .genres:
-      return "genre/movie/list"
+      "genre/movie/list"
     case let .movie(id):
-      return "movie/\(id)"
+      "movie/\(id)"
+    case .config:
+      "configuration"
     }
   }
   
   var queryParams: [URLQueryItem] {
     switch self {
     case let .discover(page: page, sortBy: sortBy):
-      return [
+      [
         URLQueryItem(name: "page", value: "\(page)"),
-        URLQueryItem(name: "sort_by", value: "\(sortBy.rawValue)"),
+        URLQueryItem(name: "sort_by", value: "\(sortBy.rawValue)")
       ]
     case .genres:
-      return []
+      []
     case .movie:
-      return []
+      []
+    case .config:
+      []
     }
   }
   
@@ -61,6 +68,8 @@ enum MovieEndpoint: EndpointConfigurable {
     case .genres:
       return nil
     case .movie:
+      return nil
+    case .config:
       return nil
     }
   }
