@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 class PosterTableViewCell: BaseTableViewCell {
-  @IBOutlet private weak var posterImageView: UIImageView!
+  @IBOutlet private(set) weak var posterImageView: UIImageView!
   
   private var downloadImageTask: DownloadTask?
   

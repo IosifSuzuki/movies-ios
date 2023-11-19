@@ -32,6 +32,11 @@ class ViewModelAssemble: Assembly {
                                   networkReachability: networkReachability, 
                                   movieExternalSource: movieExternalSource)
     }
+    container.register(FullScreenImageViewModel.self) { (resolver, image: UIImage) in
+      let networkReachability = resolver.resolve(NetworkReachability.self)!
+      
+      return FullScreenImageViewModel(image: image, networkReachability: networkReachability)
+    }
   }
   
 }

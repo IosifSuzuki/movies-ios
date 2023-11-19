@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import Swinject
 
 final class MovieDetailViewController: BaseViewController<MovieDetailViewModel> {
   
   @IBOutlet private weak var tableView: UITableView!
+  
+  private var fullScreenTransitionManager: FullScreenTransitionManager?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -74,6 +77,7 @@ extension MovieDetailViewController: UITableViewDataSource {
       return cell
     case let .poster(viewModel: posterViewModel):
       let cell = tableView.dequeueReusableCell(forClass: PosterTableViewCell.self, indexPath: indexPath)
+      cell.posterImageView.tag = 1
       cell.apply(theme: theme)
       cell.setup(viewModel: posterViewModel)
       
@@ -107,6 +111,22 @@ extension MovieDetailViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     viewModel.dataSource[indexPath.row].height
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    guard let cell = tableView.cellForRow(at: indexPath) as? PosterTableViewCell,
+          let contentImage = cell.posterImageView.image else {
+      return
+    }
+    
+    guard let fullScreenImageViewController = Assembler.shared.resolver.resolve(FullScreenImageViewController.self, argument: contentImage) else {
+      fatalError("FullScreenImageViewController isn't registered in container")
+    }
+    fullScreenTransitionManager = FullScreenTransitionManager()
+    fullScreenImageViewController.modalPresentationStyle = .custom
+    fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
+    present(fullScreenImageViewController, animated: true)
   }
   
 }

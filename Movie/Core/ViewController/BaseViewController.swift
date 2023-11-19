@@ -122,6 +122,7 @@ class BaseViewController<VM: BaseViewModel & ViewModel>: UIViewController, Theme
     )
     loaderView.duration = 0.01
     loaderView.colors = gradientColors
+    loaderView.stopAnimation()
   }
   
 }
