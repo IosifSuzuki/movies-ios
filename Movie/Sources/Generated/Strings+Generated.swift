@@ -17,6 +17,8 @@ public enum L10n {
   /// 
   ///   Created by Bogdan Petkanych on 28.10.2023.
   public static let error = L10n.tr("Localizable", "Error", fallback: "Error")
+  /// No Data
+  public static let noData = L10n.tr("Localizable", "NoData", fallback: "No Data")
   /// Search
   public static let search = L10n.tr("Localizable", "Search", fallback: "Search")
   public enum MovieSortBy {
@@ -36,6 +38,10 @@ public enum L10n {
   public enum MoviesViewController {
     /// Popular Movies
     public static let title = L10n.tr("Localizable", "MoviesViewController.title", fallback: "Popular Movies")
+    public enum EmptyState {
+      /// No movies found
+      public static let subtitle = L10n.tr("Localizable", "MoviesViewController.emptyState.subtitle", fallback: "No movies found")
+    }
     public enum SortBy {
       /// Sort movies by criteria
       public static let text = L10n.tr("Localizable", "MoviesViewController.sortBy.text", fallback: "Sort movies by criteria")

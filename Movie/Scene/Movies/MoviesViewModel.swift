@@ -22,6 +22,13 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
     moviesDS
   }
   
+  var emptyStateViewModel: EmptyStateViewModel = {
+    EmptyStateViewModel(
+      title: L10n.noData,
+      subtitle: L10n.MoviesViewController.EmptyState.subtitle
+    )
+  }()
+  
   init(moviesDS: MoviesDataSource, logger: Logger, networkReachability: NetworkReachability) {
     self.moviesDS = moviesDS
     self.logger = logger

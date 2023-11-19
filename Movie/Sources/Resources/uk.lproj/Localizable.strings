@@ -9,11 +9,13 @@
 "Error" = "Помилка";
 "Search" = "Пошук";
 "Cancel" = "Скасувати";
+"NoData" = "Нема даних";
 
 "Offline.message" = "You are offline. Please, enable your Wi-Fi or connect using cellular data.";
 
 "MoviesViewController.title" = "Популярні фільми";
 "MoviesViewController.sortBy.text" = "Сортувати фільми за критеріями";
+"MoviesViewController.emptyState.subtitle" = "Фільмів не знайдемо";
 
 "MovieSortBy.revenueDesc.text" = "Сортувати за доходом";
 "MovieSortBy.popularityDesc.text" = "Сортувати за популярністю";

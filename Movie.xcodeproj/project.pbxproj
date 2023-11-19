@@ -109,6 +109,8 @@
 		84F377EA2B0A91F900F7112C /* FullScreenPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377E92B0A91F900F7112C /* FullScreenPresentationController.swift */; };
 		84F377EC2B0A96C700F7112C /* FullScreenTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377EB2B0A96C700F7112C /* FullScreenTransitionManager.swift */; };
 		84F377EE2B0A9D6900F7112C /* FullScreenAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377ED2B0A9D6900F7112C /* FullScreenAnimationController.swift */; };
+		84F377F12B0AB8DF00F7112C /* EmptyStateTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377F02B0AB8DF00F7112C /* EmptyStateTableView.swift */; };
+		84F377F32B0AC87900F7112C /* EmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377F22B0AC87900F7112C /* EmptyStateViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -221,6 +223,8 @@
 		84F377E92B0A91F900F7112C /* FullScreenPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPresentationController.swift; sourceTree = "<group>"; };
 		84F377EB2B0A96C700F7112C /* FullScreenTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenTransitionManager.swift; sourceTree = "<group>"; };
 		84F377ED2B0A9D6900F7112C /* FullScreenAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenAnimationController.swift; sourceTree = "<group>"; };
+		84F377F02B0AB8DF00F7112C /* EmptyStateTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTableView.swift; sourceTree = "<group>"; };
+		84F377F22B0AC87900F7112C /* EmptyStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModel.swift; sourceTree = "<group>"; };
 		ADC41A2044C3707E21ADD8D7 /* Pods_Movie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE0D14D6D08DE0D6D381CDC5 /* Pods-Movie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie.release.xcconfig"; path = "Target Support Files/Pods-Movie/Pods-Movie.release.xcconfig"; sourceTree = "<group>"; };
 		DC7BF60E84FE1011DEEC6434 /* Pods-Movie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie.debug.xcconfig"; path = "Target Support Files/Pods-Movie/Pods-Movie.debug.xcconfig"; sourceTree = "<group>"; };
@@ -599,6 +603,7 @@
 		84A923D02AED0029003FC3B3 /* Movies */ = {
 			isa = PBXGroup;
 			children = (
+				84F377EF2B0AB8D100F7112C /* View */,
 				84A923D52AED01BD003FC3B3 /* TableViewCell */,
 				84A923D32AED0101003FC3B3 /* Movies.storyboard */,
 				84A923D12AED00F4003FC3B3 /* MoviesViewController.swift */,
@@ -648,6 +653,15 @@
 				84F377ED2B0A9D6900F7112C /* FullScreenAnimationController.swift */,
 			);
 			path = FullScreenImage;
+			sourceTree = "<group>";
+		};
+		84F377EF2B0AB8D100F7112C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84F377F02B0AB8DF00F7112C /* EmptyStateTableView.swift */,
+				84F377F22B0AC87900F7112C /* EmptyStateViewModel.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -838,6 +852,7 @@
 				8406B4652B02070600DC4806 /* MovieDetailViewModel.swift in Sources */,
 				844AACF02AEE7879007BCDE5 /* AppConfiguration.swift in Sources */,
 				8406B4612B0206D200DC4806 /* MovieDetailViewController.swift in Sources */,
+				84F377F12B0AB8DF00F7112C /* EmptyStateTableView.swift in Sources */,
 				844AACA52AED1F42007BCDE5 /* FontFailure.swift in Sources */,
 				844AACFF2AEEA932007BCDE5 /* URLRequestConfig.swift in Sources */,
 				8406B4742B020DED00DC4806 /* MovieDetail.swift in Sources */,
@@ -845,6 +860,7 @@
 				84A923BE2AECFEBC003FC3B3 /* SceneDelegate.swift in Sources */,
 				84F377E12B0A4FA100F7112C /* APIMovieConfiguration.swift in Sources */,
 				844AACA32AED1F30007BCDE5 /* FontConfiguration.swift in Sources */,
+				84F377F32B0AC87900F7112C /* EmptyStateViewModel.swift in Sources */,
 				844AAC922AED1799007BCDE5 /* BaseTableViewCell.swift in Sources */,
 				844AAC8A2AED168E007BCDE5 /* Container+Extension.swift in Sources */,
 				844AACD02AED2A73007BCDE5 /* ModernTheme.swift in Sources */,

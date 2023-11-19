@@ -9,6 +9,10 @@ import UIKit
 
 class FullScreenImageViewController: BaseViewController<FullScreenImageViewModel> {
   
+  override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    .portrait
+  }
+  
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
     scrollView.contentInsetAdjustmentBehavior = .never
