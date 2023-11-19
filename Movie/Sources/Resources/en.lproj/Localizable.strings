@@ -9,14 +9,17 @@
 "Error" = "Error";
 "Search" = "Search";
 "Cancel" = "Cancel";
+"NoData" = "No Data";
 
 "Offline.message" = "You are offline. Please, enable your Wi-Fi or connect using cellular data.";
 
 "MoviesViewController.title" = "Popular Movies";
 "MoviesViewController.sortBy.text" = "Sort movies by criteria";
+"MoviesViewController.emptyState.subtitle" = "No movies found";
 
 "MovieSortBy.revenueDesc.text" = "Sort by revenue";
 "MovieSortBy.popularityDesc.text" = "Sort by popularity";
 "MovieSortBy.voteAverageDesc.text" = "Sort by vote average";
 
 "MoviesViewController.watchTheTrailer.text" = "Trailer";
+

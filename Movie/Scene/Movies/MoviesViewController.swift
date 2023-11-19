@@ -15,6 +15,8 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   @IBOutlet private weak var tableView: UITableView!
   private weak var sortByBarButtonItem: UIBarButtonItem?
   
+  private var emptyStateView: EmptyStateTableView?
+  
   private var searchController: UISearchController!
   private var searchTextField: UISearchTextField {
     searchController.searchBar.searchTextField
@@ -39,6 +41,8 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
       .text
       .throttle(.seconds(1), latest: true, scheduler: MainScheduler.asyncInstance)
       .asDriver(onErrorDriveWith: Driver<String?>.empty())
+    
+    emptyStateView?.setup(viewModel: viewModel.emptyStateViewModel)
     
     let input = MoviesViewModel.Input(
       sortByTrigger: sortByTrigger, 
@@ -85,6 +89,8 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     tableView.refreshControl?.tintColor = theme.titleColor
     
     navigationItem.rightBarButtonItem?.tintColor = theme.titleColor
+    
+    emptyStateView?.apply(theme: theme)
   }
   
   override func setupView() {
@@ -96,6 +102,9 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     tableView.refreshControl = refreshControl
     tableView.contentInset.bottom = view.safeAreaInsets.bottom
+    
+    emptyStateView = EmptyStateTableView(frame: .zero)
+    tableView.backgroundView = emptyStateView
     
     searchController = UISearchController()
     searchController.searchBar.delegate = self
@@ -158,7 +167,10 @@ extension MoviesViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    viewModel.dataSource.numberOfRows(in: section)
+    let rows = viewModel.dataSource.numberOfRows(in: section)
+    tableView.backgroundView?.isHidden = rows > 0
+    
+    return rows
   }
   
 }
