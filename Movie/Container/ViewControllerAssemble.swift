@@ -36,6 +36,16 @@ class ViewControllerAssemble: Assembly {
       
       return viewController
     }
+    container.register(FullScreenImageViewController.self) { (resolver, image: UIImage) in
+      let theme = resolver.resolve(Theme.self, name: ModernTheme.identifier)
+      let viewModel = resolver.resolve(FullScreenImageViewModel.self, argument: image)
+      
+      let viewController = FullScreenImageViewController()
+      viewController.viewModel = viewModel
+      viewController.theme = theme
+      
+      return viewController
+    }
   }
   
 }
