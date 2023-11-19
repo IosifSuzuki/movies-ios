@@ -97,6 +97,13 @@
 		84DEB6422AF7E67800937978 /* GenresManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DEB6412AF7E67800937978 /* GenresManager.swift */; };
 		84DEB6442AF7E98700937978 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DEB6432AF7E98700937978 /* Logger.swift */; };
 		84DEB6462AF7E9A800937978 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DEB6452AF7E9A800937978 /* AppLogger.swift */; };
+		84F377D32B0A263F00F7112C /* ImageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377D22B0A263F00F7112C /* ImageConfiguration.swift */; };
+		84F377D52B0A26BF00F7112C /* MovieAPIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377D42B0A26BF00F7112C /* MovieAPIConfiguration.swift */; };
+		84F377DB2B0A2B4A00F7112C /* MovieConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377DA2B0A2B4A00F7112C /* MovieConfigManager.swift */; };
+		84F377DD2B0A2F1F00F7112C /* MovieImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377DC2B0A2F1F00F7112C /* MovieImageSize.swift */; };
+		84F377DF2B0A385F00F7112C /* MoviePathBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377DE2B0A385F00F7112C /* MoviePathBuilder.swift */; };
+		84F377E12B0A4FA100F7112C /* APIMovieConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377E02B0A4FA100F7112C /* APIMovieConfiguration.swift */; };
+		84F377E32B0A655F00F7112C /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F377E22B0A655F00F7112C /* UIApplication+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,6 +204,13 @@
 		84DEB6412AF7E67800937978 /* GenresManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresManager.swift; sourceTree = "<group>"; };
 		84DEB6432AF7E98700937978 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		84DEB6452AF7E9A800937978 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		84F377D22B0A263F00F7112C /* ImageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConfiguration.swift; sourceTree = "<group>"; };
+		84F377D42B0A26BF00F7112C /* MovieAPIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAPIConfiguration.swift; sourceTree = "<group>"; };
+		84F377DA2B0A2B4A00F7112C /* MovieConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieConfigManager.swift; sourceTree = "<group>"; };
+		84F377DC2B0A2F1F00F7112C /* MovieImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImageSize.swift; sourceTree = "<group>"; };
+		84F377DE2B0A385F00F7112C /* MoviePathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePathBuilder.swift; sourceTree = "<group>"; };
+		84F377E02B0A4FA100F7112C /* APIMovieConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMovieConfiguration.swift; sourceTree = "<group>"; };
+		84F377E22B0A655F00F7112C /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		ADC41A2044C3707E21ADD8D7 /* Pods_Movie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE0D14D6D08DE0D6D381CDC5 /* Pods-Movie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie.release.xcconfig"; path = "Target Support Files/Pods-Movie/Pods-Movie.release.xcconfig"; sourceTree = "<group>"; };
 		DC7BF60E84FE1011DEEC6434 /* Pods-Movie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie.debug.xcconfig"; path = "Target Support Files/Pods-Movie/Pods-Movie.debug.xcconfig"; sourceTree = "<group>"; };
@@ -234,6 +248,7 @@
 		8406B4582B014A0300DC4806 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				84F377DC2B0A2F1F00F7112C /* MovieImageSize.swift */,
 				8406B4562B0149FB00DC4806 /* MovieFilter.swift */,
 			);
 			path = DTO;
@@ -328,6 +343,7 @@
 				841529C82AF51BC10026E880 /* Array+Extension.swift */,
 				84DEB63B2AF7D32800937978 /* UIImage+Extension.swift */,
 				8406B4782B0219F100DC4806 /* Date+Extension.swift */,
+				84F377E22B0A655F00F7112C /* UIApplication+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -495,6 +511,8 @@
 				84DEB63D2AF7E2B600937978 /* Genre.swift */,
 				8406B4732B020DED00DC4806 /* MovieDetail.swift */,
 				8406B4762B0213E300DC4806 /* ProductionCountry.swift */,
+				84F377D22B0A263F00F7112C /* ImageConfiguration.swift */,
+				84F377D42B0A26BF00F7112C /* MovieAPIConfiguration.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -512,6 +530,8 @@
 				84DEB6412AF7E67800937978 /* GenresManager.swift */,
 				84DEB6452AF7E9A800937978 /* AppLogger.swift */,
 				84803B872B06129D00C37ACC /* NRComponent.swift */,
+				84F377DA2B0A2B4A00F7112C /* MovieConfigManager.swift */,
+				84F377DE2B0A385F00F7112C /* MoviePathBuilder.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -602,6 +622,7 @@
 				8406B4522B0122B000DC4806 /* Pagination.swift */,
 				8406B45D2B016FB900DC4806 /* DataSource.swift */,
 				84803B852B0611F400C37ACC /* NetworkReachability.swift */,
+				84F377E02B0A4FA100F7112C /* APIMovieConfiguration.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -775,6 +796,7 @@
 				844AACDE2AED3420007BCDE5 /* ThemeDependency.swift in Sources */,
 				844AACFA2AEE9F14007BCDE5 /* MovieEndpoint.swift in Sources */,
 				84DEB6462AF7E9A800937978 /* AppLogger.swift in Sources */,
+				84F377D32B0A263F00F7112C /* ImageConfiguration.swift in Sources */,
 				844AACF62AEE7E3B007BCDE5 /* APIMovie.swift in Sources */,
 				844AAD052AEED207007BCDE5 /* PageMovies.swift in Sources */,
 				8406B47E2B0244D300DC4806 /* AboutMovieTableViewCell.swift in Sources */,
@@ -782,6 +804,7 @@
 				844AAC9E2AED1E2C007BCDE5 /* ServiceAssembler.swift in Sources */,
 				8406B4532B0122B000DC4806 /* Pagination.swift in Sources */,
 				8406B4792B0219F100DC4806 /* Date+Extension.swift in Sources */,
+				84F377DF2B0A385F00F7112C /* MoviePathBuilder.swift in Sources */,
 				844AACCA2AED2662007BCDE5 /* Identify.swift in Sources */,
 				844AACC72AED25EE007BCDE5 /* UITableView+Extension.swift in Sources */,
 				8406B4572B0149FB00DC4806 /* MovieFilter.swift in Sources */,
@@ -797,6 +820,7 @@
 				8406B4742B020DED00DC4806 /* MovieDetail.swift in Sources */,
 				841529C92AF51BC10026E880 /* Array+Extension.swift in Sources */,
 				84A923BE2AECFEBC003FC3B3 /* SceneDelegate.swift in Sources */,
+				84F377E12B0A4FA100F7112C /* APIMovieConfiguration.swift in Sources */,
 				844AACA32AED1F30007BCDE5 /* FontConfiguration.swift in Sources */,
 				844AAC922AED1799007BCDE5 /* BaseTableViewCell.swift in Sources */,
 				844AAC8A2AED168E007BCDE5 /* Container+Extension.swift in Sources */,
@@ -810,10 +834,12 @@
 				844AACDC2AED2EA0007BCDE5 /* ModernFont.swift in Sources */,
 				84803B862B0611F400C37ACC /* NetworkReachability.swift in Sources */,
 				844AACDA2AED2E59007BCDE5 /* AppFont.swift in Sources */,
+				84F377E32B0A655F00F7112C /* UIApplication+Extension.swift in Sources */,
 				84DEB6442AF7E98700937978 /* Logger.swift in Sources */,
 				844AAD092AEEF286007BCDE5 /* LoggerEventMonitor.swift in Sources */,
 				8406B4822B02454000DC4806 /* AboutMovieViewModel.swift in Sources */,
 				844AACD62AED2D57007BCDE5 /* Strings+Generated.swift in Sources */,
+				84F377DB2B0A2B4A00F7112C /* MovieConfigManager.swift in Sources */,
 				844AACE62AED86E5007BCDE5 /* BaseViewModel.swift in Sources */,
 				844AACCC2AED26E6007BCDE5 /* ViewModel.swift in Sources */,
 				8406B45C2B016E8D00DC4806 /* MoviesDataSource.swift in Sources */,
@@ -841,7 +867,9 @@
 				8406B48C2B024D4D00DC4806 /* DesignedButton.swift in Sources */,
 				841529C72AF4F7970026E880 /* UIColor+Extension.swift in Sources */,
 				844AACFD2AEEA1AD007BCDE5 /* EndpointConfigurable.swift in Sources */,
+				84F377D52B0A26BF00F7112C /* MovieAPIConfiguration.swift in Sources */,
 				844AAC8E2AED172E007BCDE5 /* BaseViewController.swift in Sources */,
+				84F377DD2B0A2F1F00F7112C /* MovieImageSize.swift in Sources */,
 				8406B4722B020B5E00DC4806 /* MovieInfoViewModel.swift in Sources */,
 				844AACEA2AED8BED007BCDE5 /* MovieItemTableViewCell.swift in Sources */,
 				844AAC9A2AED1D6E007BCDE5 /* Assembler+Extension.swift in Sources */,

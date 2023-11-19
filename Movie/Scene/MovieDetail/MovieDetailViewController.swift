@@ -75,7 +75,7 @@ extension MovieDetailViewController: UITableViewDataSource {
     case let .poster(viewModel: posterViewModel):
       let cell = tableView.dequeueReusableCell(forClass: PosterTableViewCell.self, indexPath: indexPath)
       cell.apply(theme: theme)
-      cell.setup(viewModel: posterViewModel, logger: viewModel.logger)
+      cell.setup(viewModel: posterViewModel)
       
       return cell
     case let .about(viewModel: viewModel):

@@ -45,6 +45,14 @@ class ServiceAssemble: Assembly {
       
       return GenresManager(logger: logger, apiMovie: apiMovie)
     }.inObjectScope(.container)
+    
+    container.register(APIMovieConfiguration.self) { resolver in
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
+      let apiMovie = resolver.resolve(APIMovie.self)!
+      
+      return MovieConfigManager(logger: logger, apiMovie: apiMovie)
+    }.inObjectScope(.container)
+    
     container.register(MoviesPagination.self) { resolver in
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
       let apiMovie = resolver.resolve(APIMovie.self)!
@@ -52,10 +60,15 @@ class ServiceAssemble: Assembly {
       return MoviesPagination(movies: apiMovie, logger: logger)
     }
     container.register(MoviesDataSource.self) { resolver in
+      let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
       let moviesPagination = resolver.resolve(MoviesPagination.self)!
       let availableGenres = resolver.resolve(AvailableGenres.self)!
+      let apiMovieConfiguration = resolver.resolve(APIMovieConfiguration.self)!
       
-      return MoviesDataSource(moviesPagination: moviesPagination, availableGenres: availableGenres)
+      return MoviesDataSource(moviesPagination: moviesPagination, 
+                              availableGenres: availableGenres,
+                              movieConfiguration: apiMovieConfiguration,
+                              logger: logger)
     }
     container.register(NetworkReachability.self) { resolver in
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!

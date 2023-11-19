@@ -97,4 +97,10 @@ extension NetworkOperation: APIMovie {
     
     return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
   }
+  
+  func config() async throws -> MovieAPIConfiguration {
+    let endpointRequest = endpointRequest(endpoitConfigurable: MovieEndpoint.config)
+    
+    return try await performRequest(endpoint: endpointRequest, jsonDecoder: jsonDecoder)
+  }
 }

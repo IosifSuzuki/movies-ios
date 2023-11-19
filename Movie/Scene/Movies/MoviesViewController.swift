@@ -15,8 +15,8 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
   @IBOutlet private weak var tableView: UITableView!
   private weak var sortByBarButtonItem: UIBarButtonItem?
   
-  var searchController: UISearchController!
-  var searchTextField: UISearchTextField {
+  private var searchController: UISearchController!
+  private var searchTextField: UISearchTextField {
     searchController.searchBar.searchTextField
   }
   
@@ -95,7 +95,7 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     tableView.refreshControl = refreshControl
-//    tableView.contentInset.bottom = view.safeAreaInsets.bottom
+    tableView.contentInset.bottom = view.safeAreaInsets.bottom
     
     searchController = UISearchController()
     searchController.searchBar.delegate = self
@@ -151,7 +151,7 @@ extension MoviesViewController: UITableViewDataSource {
     case let viewModel as MovieItemViewModel:
       cell.setup(viewModel: viewModel)
     default:
-      fatalError("unprocessed case")
+      break
     }
     
     return cell

@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct ApplicationError: Error {
+struct ApplicationError: Error, LocalizedError {
   let reason: String
   
-  var localizedDescription: String {
+  var errorDescription: String {
     return reason
   }
   

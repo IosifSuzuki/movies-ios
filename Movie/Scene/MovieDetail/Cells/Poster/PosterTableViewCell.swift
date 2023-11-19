@@ -12,13 +12,17 @@ class PosterTableViewCell: BaseTableViewCell {
   @IBOutlet private weak var posterImageView: UIImageView!
   
   private var downloadImageTask: DownloadTask?
-  private var logger: Logger?
   
-  func setup(viewModel: PosterViewModel, logger: Logger) {
-    self.logger = logger
-    self.posterImageView.contentMode = .scaleAspectFill
+  func setup(viewModel: PosterViewModel) {
+    posterImageView.contentMode = .top
+    
+    guard let posterURL = viewModel.posterURL(by: posterImageView.bounds.width) else {
+      viewModel.logger.error(message: "retrieve poster url has failed")
+      return
+    }
+    
     downloadImageTask?.cancel()
-    downloadImageTask = KingfisherManager.shared.retrieveImage(with: viewModel.posterURL, options: [.cacheOriginalImage]) { [weak self] result in
+    downloadImageTask = KingfisherManager.shared.retrieveImage(with: posterURL, options: [.cacheOriginalImage]) { [weak self] result in
       guard let self else {
         return
       }
@@ -26,7 +30,7 @@ class PosterTableViewCell: BaseTableViewCell {
       case let .success(imageResult):
         self.posterImageView.image = imageResult.image.resizeTopAlignedToFill(newWidth: self.posterImageView.bounds.width)
       case let .failure(error):
-        self.logger?.error(message: "download image by source", err: error)
+        viewModel.logger.error(message: "download image by source", err: error)
       }
     }
   }

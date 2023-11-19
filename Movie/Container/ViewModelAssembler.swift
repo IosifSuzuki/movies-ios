@@ -24,11 +24,13 @@ class ViewModelAssemble: Assembly {
       let apiMovie = resolver.resolve(APIMovie.self)!
       let logger = resolver.resolve(Logger.self, name: AppLogger.identifier)!
       let networkReachability = resolver.resolve(NetworkReachability.self)!
+      let movieExternalSource = resolver.resolve(APIMovieConfiguration.self)!
       
       return MovieDetailViewModel(movieID: movieID, 
                                   apiMovie: apiMovie,
                                   logger: logger,
-                                  networkReachability: networkReachability)
+                                  networkReachability: networkReachability, 
+                                  movieExternalSource: movieExternalSource)
     }
   }
   

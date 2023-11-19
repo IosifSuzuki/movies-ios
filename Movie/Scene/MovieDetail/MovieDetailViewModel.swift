@@ -13,6 +13,7 @@ import RxCocoa
 class MovieDetailViewModel: BaseViewModel, ViewModel {
   
   private let apiMovie: APIMovie
+  private let movieExternalSource: MovieExternalSource
   private let movieID: Int
   private let refreshViewSubject = PublishSubject<Void>()
   private let topTitle = PublishSubject<String?>()
@@ -20,10 +21,15 @@ class MovieDetailViewModel: BaseViewModel, ViewModel {
   let logger: Logger
   var dataSource: [Cells] = []
   
-  init(movieID: Int, apiMovie: APIMovie, logger: Logger, networkReachability: NetworkReachability) {
+  init(movieID: Int, 
+       apiMovie: APIMovie,
+       logger: Logger,
+       networkReachability: NetworkReachability,
+       movieExternalSource: MovieExternalSource) {
     self.movieID = movieID
     self.apiMovie = apiMovie
     self.logger = logger
+    self.movieExternalSource = movieExternalSource
     
     super.init(networkReachability: networkReachability)
   }
@@ -96,7 +102,7 @@ private extension MovieDetailViewModel {
     
     topTitle.onNext(movieDetail.originalTitle)
     
-    if let posterViewModel = PosterViewModel(movieDetail: movieDetail) {
+    if let posterViewModel = PosterViewModel(movieDetail: movieDetail, movieExternalSource: movieExternalSource, logger: logger) {
       dataSource.append(.poster(viewModel: posterViewModel))
     }
     
