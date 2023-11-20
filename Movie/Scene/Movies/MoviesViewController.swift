@@ -22,12 +22,6 @@ final class MoviesViewController: BaseViewController<MoviesViewModel> {
     searchController.searchBar.searchTextField
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    viewModel.refreshData()
-  }
-  
   override func bindToViewModel() {
     super.bindToViewModel()
     

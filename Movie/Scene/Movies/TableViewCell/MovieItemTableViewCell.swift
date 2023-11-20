@@ -17,11 +17,34 @@ final class MovieItemTableViewCell: BaseTableViewCell {
   @IBOutlet private weak var ratingLabel: UILabel!
   
   private var downloadImageTask: DownloadTask?
+  private var viewModel: MovieItemViewModel?
+  
+  var width: CGFloat {
+    guard let keyWindow = UIApplication.shared.currentWindow else {
+      return .zero
+    }
+    
+    return keyWindow.screen.bounds.width - 32
+  }
   
   override func awakeFromNib() {
     super.awakeFromNib()
     
     posterImageView.layer.cornerRadius = 3
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    
+    guard let previousTraitCollection,
+            previousTraitCollection.verticalSizeClass != traitCollection.verticalSizeClass ||
+            previousTraitCollection.horizontalSizeClass != traitCollection.horizontalSizeClass else {
+      return
+    }
+    
+    if let viewModel {
+      setup(viewModel: viewModel)
+    }
   }
   
   override func prepareForReuse() {
@@ -43,26 +66,29 @@ final class MovieItemTableViewCell: BaseTableViewCell {
   // MARK: - Internal
   
   func setup(viewModel: MovieItemViewModel) {
+    self.viewModel = viewModel
     downloadImageTask?.cancel()
     
-    guard let posterURL = viewModel.posterURL(by: posterImageView.bounds.width) else {
+    guard let posterURL = viewModel.posterURL(by: width) else {
       return
     }
     posterImageView.contentMode = .top
-    let posterImageViewBounds = posterImageView.bounds
     downloadImageTask = KingfisherManager.shared.retrieveImage(with: posterURL, options: [.cacheOriginalImage]) { [weak self] result in
+      guard let self else {
+        return
+      }
       switch result {
       case let .success(imageResult):
-        self?.posterImageView.image = imageResult.image.resizeTopAlignedToFill(newWidth: posterImageViewBounds.width)
-        self?.addShadow()
-        self?.applyTextColor(to: imageResult.image.isDark)
+        self.posterImageView.image = imageResult.image.resizeTopAlignedToFill(newWidth: self.width)
+        self.addShadow()
+        self.applyTextColor(to: imageResult.image.isDark)
         
-        self?.titleLabel.text = "\(viewModel.title)"
+        self.titleLabel.text = "\(viewModel.title)"
         if let yearText = viewModel.yearText {
-          self?.titleLabel.text?.append(" \(yearText)")
+          self.titleLabel.text?.append(" \(yearText)")
         }
-        self?.genresLabel.text = viewModel.genresText
-        self?.ratingLabel.text = viewModel.avarageRatingText
+        self.genresLabel.text = viewModel.genresText
+        self.ratingLabel.text = viewModel.avarageRatingText
       case let .failure(error):
         print("error: \(error)")
       }

@@ -54,7 +54,8 @@ private extension NetworkOperation {
           }
           let result: T
           do {
-            result = try jsonDecoder.decode(T.self, from: bodyData)
+            result = try jsonDecoder.decode(
+              T.self, from: bodyData)
           } catch {
             print("json decoded occured error: \(error)")
             continuation.resume(throwing: error)

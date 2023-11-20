@@ -61,6 +61,18 @@ final class MoviesViewModel: BaseViewModel, ViewModel {
       })
       .disposed(by: disposeBag)
     
+    Observable.combineLatest(moviesDS.availableGenres.isRefreshedList, moviesDS.movieConfiguration.isReady)
+      .map({ isReadyAvailableGenres, isReadyMovieConfiguration in
+        return isReadyAvailableGenres && isReadyMovieConfiguration
+      })
+      .subscribe(onNext: { [weak self] isReadyToRefreshData in
+        guard isReadyToRefreshData else {
+          return
+        }
+        self?.refreshData()
+      })
+      .disposed(by: disposeBag)
+    
     return Output(
       refreshViewTrigger: refreshView.asDriver(onErrorDriveWith: Driver<()>.empty()), 
       sortByTrigger: movieSortByItems.asDriver(onErrorDriveWith: Driver<[MovieSortByItem]>.empty()), 

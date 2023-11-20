@@ -61,17 +61,6 @@ final class FullScreenPresentationController: UIPresentationController {
     presentedViewController.dismiss(animated: true)
   }
   
-  @objc private func swipeDown(_ sender: UIPanGestureRecognizer) {
-    let velocity = sender.velocity(in: self.presentedViewController.view)
-
-    switch sender.state {
-    case .ended where -velocity.y > 1000:
-      presentedViewController.dismiss(animated: true)
-    default:
-      break
-    }
-  }
-  
 }
 
 // MARK: UIPresentationController
@@ -101,10 +90,6 @@ extension FullScreenPresentationController {
     
     containerView.setNeedsLayout()
     containerView.layoutIfNeeded()
-    
-    let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeDown))
-    swipeGesture.delegate = self
-    presentedViewController.view.addGestureRecognizer(swipeGesture)
     
     guard let transitionCoordinator = presentingViewController.transitionCoordinator else { return }
     
@@ -141,12 +126,4 @@ extension FullScreenPresentationController {
     closeButtonContainer.removeFromSuperview()
   }
   
-}
-
-extension FullScreenPresentationController: UIGestureRecognizerDelegate {
-  
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, 
-                         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    return true
-  }
 }
